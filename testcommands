@@ -1,0 +1,95 @@
+using ConsoleApp11.other;
+using DSharpPlus.CommandsNext;
+using DSharpPlus.CommandsNext.Attributes;
+using DSharpPlus.Entities;
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ConsoleApp11.commands
+{
+    public class TestCommands : BaseCommandModule
+    {
+        [Command("test")]
+        public async Task MyFirstCommand(CommandContext ctx)
+        {
+            await ctx.Channel.SendMessageAsync($"Hallo {ctx.User.Username}");
+        }
+
+        [Command("add")]
+        public async Task Add(CommandContext ctx, int number1, int number2)
+        {
+            int result = number1 + number2;
+            await ctx.Channel.SendMessageAsync(result.ToString());
+        }
+
+        [Command("sub")]
+        public async Task Sub(CommandContext ctx, int number1, int number2)
+        {
+            int result = number1 - number2;
+            await ctx.Channel.SendMessageAsync(result.ToString());
+        }
+
+        [Command("embed")]
+        public async Task EmbedMessage(CommandContext ctx)
+        {
+            var message = new DiscordEmbedBuilder
+            {
+               Title = "Viggos Discord Embed",
+               Description = $"This was executed by {ctx.User.Username}",
+               Color = DiscordColor.Blurple
+            }; 
+
+            await ctx.Channel.SendMessageAsync(embed: message);
+        }
+        [Command("Cardgame")]
+        public async Task Cardgame(CommandContext ctx)
+        {
+            var userCard = new Cardsystem();
+
+            var userCardEmbed = new DiscordEmbedBuilder
+            {
+                Title = $"Your card is {userCard.SelectedCard}",
+                Color = DiscordColor.Blurple
+            };
+
+            await ctx.Channel.SendMessageAsync(embed: userCardEmbed);
+
+            var botCard = new Cardsystem();
+
+            var botCardEmbed = new DiscordEmbedBuilder
+            {
+                Title = $"Trumpcar drew a {botCard.SelectedCard}",
+                Color = DiscordColor.Orange
+            };
+
+            await ctx.Channel.SendMessageAsync(embed: botCardEmbed);
+
+            if (userCard.SelectedNumber > botCard.SelectedNumber)
+            {
+                //user Wins
+                var winMessage = new DiscordEmbedBuilder
+                {
+                    Title = "You win!? b-but how",
+                    Color = DiscordColor.Green
+
+                };
+                await ctx.Channel.SendMessageAsync(embed: winMessage);
+            }
+            else
+            {
+                //Bot Wins
+                var loseMessage = new DiscordEmbedBuilder
+                {
+                    Title = "You lost!!",
+                    Color = DiscordColor.Red
+
+                };
+                await ctx.Channel.SendMessageAsync(embed: loseMessage);
+            }
+        }
+    }
+}
