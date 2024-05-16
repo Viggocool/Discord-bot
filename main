@@ -29,7 +29,7 @@ namespace DiscordBot
             var discordConfig = new DiscordConfiguration()
             {
                 Intents = DiscordIntents.All,
-                Token = jsonReader.token,
+                Token = jsonReader.token, //Token är gömmd i en jsonfil där jsonreader är menad att läsa token
                 TokenType = TokenType.Bot,
                 AutoReconnect = true
             };
